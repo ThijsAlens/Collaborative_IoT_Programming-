@@ -1,0 +1,112 @@
+------
+WHEELS
+------
+
+moveForward()
+"""
+    move forward indefinitly
+args:
+    None
+returns:
+    0 if success
+    1 if failed
+"""
+
+moveBackward()
+"""
+    move backwards indefinitly
+args:
+    None
+returns:
+    0 if success
+    1 if failed
+"""
+
+
+rotateCW()
+"""
+rotate CW indefinitly
+args:
+    None
+returns:
+    0 if success
+    1 if failed
+"""
+
+rotateCCW()
+"""
+    rotate CCW indefinitly
+args:
+    None
+returns:
+    0 if success
+    1 if failed
+"""
+
+stop()
+"""
+    stop all movement
+args:
+    None
+returns:
+    0 if success
+    1 if failed
+"""
+
+------
+CAMERA
+------
+
+getImage()
+"""
+    Obtain an image from the camera
+args:
+    None
+returns:
+    list[list[int]]     # 2D image
+"""
+
+------
+CLAMP
+------
+
+grab()
+"""
+    Grab the tennisball
+args:
+    None
+returns:
+    0 if success
+    1 if failed
+"""
+
+release()
+"""
+    release the tennisball
+args:
+    None
+returns:
+    0 if success
+    1 if failed
+
+TOPIC onClampStatusChanged(status: bool)
+"""
+    some topic to tell if the clamb is closed or opened
+args:
+    status(bool): 0 if closed; 1 if opened
+returns:
+    None
+"""
+
+------
+DISTANCE SENSOR
+------
+
+getDistance()
+"""
+    measures the distance to the nearest object
+args:
+    None
+returns:
+    float
+"""
