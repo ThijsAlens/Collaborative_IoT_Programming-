@@ -15,10 +15,10 @@ def main(args = None):
     rclpy.init(args=args)
     publisher = BallInference()
 
-    #rclpy.spin(publisher)
-
-    #publisher.destroy_node()
-    #rclpy.shutdown()
+    rclpy.spin(publisher)
+    
+    publisher.destroy_node()
+    rclpy.shutdown()
 
 class BallInference(Node):
     
@@ -26,17 +26,23 @@ class BallInference(Node):
         super().__init__("BallInference")
 
         self.publisher = self.create_publisher(Bool, 'ballInference', 10)
-        #timer_period = 0.5
-        #self.timer = self.create_timer(timer_period, self.timer_callback)
+
         print("Created BallInference node")
 
-    def timer_callback(self):
+        self.subscription = self.create_subscription(
+            Image, 
+            "getImage",
+            self.listener_callback,
+            10
+        )
 
-        msg = Int64()
-        msg.data = random.randint(0, 4)
+    def listener_callback(self, msg):
+        ball_detected = self.process_image(msg)
 
-        self.publisher.publish(msg)
-        self.get_logger().info('Publishing ' & msg.data)
+        output_msg = Bool()
+        output_msg = ball_detected
+        self.get_logger().info("Calling inference; detected ball = " + ball_detected)
+        self.publisher.publish(output_msg)
 
 
     def process_image(self,image):
