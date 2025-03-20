@@ -63,7 +63,7 @@ getImage()
 args:
     None
 returns:
-    list[list[int]]     # 2D image
+    cv2 image     # 2D image
 """
 
 ------
