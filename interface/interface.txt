@@ -63,7 +63,7 @@ getImage()
 args:
     None
 returns:
-    cv2 image     # 2D image
+    std image     # 2D image
 """
 
 ------
