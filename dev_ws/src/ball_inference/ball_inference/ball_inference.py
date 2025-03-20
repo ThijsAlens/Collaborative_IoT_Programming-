@@ -6,8 +6,8 @@ from sensor_msgs.msg import Image
 
 from ament_index_python.packages import get_package_share_directory
 import cv2
-import os
-import random
+import numpy as np
+from cv_bridge import CvBridge
 
 
 def main(args = None):
@@ -36,19 +36,24 @@ class BallInference(Node):
             10
         )
 
+        self.bridge = CvBridge()
+
     def listener_callback(self, msg):
         ball_detected = self.process_image(msg)
 
         output_msg = Bool()
-        output_msg = ball_detected
-        self.get_logger().info("Calling inference; detected ball = " + ball_detected)
+        output_msg.data = ball_detected
+        self.get_logger().info("Calling inference; detected ball = " + str(ball_detected))
         self.publisher.publish(output_msg)
 
 
     def process_image(self,image):
     
         # Convert image
-        cv_image = self.bridge.imgmsg_to_cv2(image, desired_encoding='bgr8')
+        cv_image = self.bridge.imgmsg_to_cv2(image)
+
+        cv2.imshow("camera", cv_image)
+        cv2.waitKey(1)
 
         # Blur to reduce noise
         blurred = cv2.GaussianBlur(cv_image, (11, 11), 0)
