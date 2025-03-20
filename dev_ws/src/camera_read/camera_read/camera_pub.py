@@ -12,17 +12,25 @@ class ImagePublisher(Node):
 
         self.timer = self.create_timer(0.1, self.timer_callback)
 
-        self.capture = cv2.VideoCapture(0)
+        self.capture = cv2.VideoCapture(0, cv2.CAP_V4L2)
+
+        self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+        self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+        self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+        self.capture.set(cv2.CAP_PROP_FPS, 30)
+
         self.bridge = CvBridge()
 
     def timer_callback(self):
         ret, frame = self.capture.read()
 
         if ret == True:
-            self.publisher_.publish(self.br.cv2_to_imgmsg(frame))
-            self.get_logger().info("len: ", len(frame))
+            self.publisher_.publish(self.bridge.cv2_to_imgmsg(frame))
 
             self.get_logger().info('Publishing video frame')
+        else:
+            self.get_logger().info("couldn't get a frame")
+
 
 
 def main(args=None):
