@@ -12,21 +12,8 @@ import random
 
 def main(args = None):
 
-    package_path = get_package_share_directory('ball_inference')
-
-    dir_path = "Collaborative_IoT_Programming-/dev_ws/install/ball_inference/share/ball_inference/data/"
-    
-
-    dir_path = os.path.join(package_path, "data")
-
-    print(dir_path + "image1.png")
-    image1 = cv2.imread(dir_path + "image1.png")
-    image2 = cv2.imread(dir_path + "image2.png")
-    image3 = cv2.imread(dir_path + "image3.png")
-    print(image1)
-
     rclpy.init(args=args)
-    publisher = BallInference(image1, image2, image3)
+    publisher = BallInference()
 
     #rclpy.spin(publisher)
 
@@ -35,22 +22,13 @@ def main(args = None):
 
 class BallInference(Node):
     
-    def __init__(self, image1, image2, image3):
+    def __init__(self):
         super().__init__("BallInference")
 
         self.publisher = self.create_publisher(Bool, 'ballInference', 10)
         #timer_period = 0.5
         #self.timer = self.create_timer(timer_period, self.timer_callback)
-
-        ball_detected = self.process_image(image1)
-        print(ball_detected)
-
-        ball_detected = self.process_image(image2)
-        print(ball_detected)
-
-        ball_detected = self.process_image(image3)
-        print(ball_detected)
-
+        print("Created BallInference node")
 
     def timer_callback(self):
 
@@ -61,12 +39,10 @@ class BallInference(Node):
         self.get_logger().info('Publishing ' & msg.data)
 
 
-    def process_image(self, image):
-        
-          # Convert image
-        #cv_image = self.bridge.imgmsg_to_cv2(image, desired_encoding='bgr8')
-
-        cv_image = image
+    def process_image(self,image):
+    
+        # Convert image
+        cv_image = self.bridge.imgmsg_to_cv2(image, desired_encoding='bgr8')
 
         # Blur to reduce noise
         blurred = cv2.GaussianBlur(cv_image, (11, 11), 0)
@@ -75,17 +51,43 @@ class BallInference(Node):
         hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
 
         # Define color range for tennis ball (yellow-green)
-        lower_yellow = np.array([163, 162, 0])
-        upper_yellow = np.array([255, 229, 0])
+        lower_yellow = np.array([28, 100, 100])
+        upper_yellow = np.array([38, 255, 255])
         mask = cv2.inRange(hsv, lower_yellow, upper_yellow)
 
         # Morphological operations to clean up the mask
-        mask = cv2.erode(mask, None, iterations=2)
-        mask = cv2.dilate(mask, None, iterations=2)
+        mask = cv2.erode(mask, None, iterations=3)
+        mask = cv2.dilate(mask, None, iterations=3)
 
-        avg = sum(mask)/len(mask)
 
-        return avg > 0.25
+        contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        found_ball = False    
+
+        masks_circles = np.zeros_like(mask)
+        for contour in contours:
+
+            area = cv2.contourArea(contour)
+
+            # Filter out small or excessively large shapes
+            if 500 < area < 50000:
+                # Fit a circle around the contour
+                (x, y), radius = cv2.minEnclosingCircle(contour)
+                center = (int(x), int(y))
+                radius = int(radius)
+                circle_area = np.pi * (radius ** 2)
+
+                # Calculate pixel density inside the circle
+                mask_circle = np.zeros_like(mask)
+                mask_visualisation = np.zeros_like(mask)
+                cv2.circle(mask_circle, center, radius, 255, -1)
+                cv2.circle(mask_visualisation, center, radius, 255, 3)
+                points_inside = cv2.countNonZero(mask & mask_circle)
+                density = points_inside / circle_area
+                if(density > 0.6):
+                    masks_circles = masks_circles + mask_visualisation
+                    found_ball = True
+
+        return found_ball
 
 
 
