@@ -10,6 +10,9 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        ('share/' + package_name + "/data", ['share/data/image1.png']),
+        ('share/' + package_name + "/data", ['share/data/image2.png']),
+        ('share/' + package_name + "/data", ['share/data/image3.png']),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -20,6 +23,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'ball_inference = ball_inference.ball_inference:main'
         ],
     },
 )
