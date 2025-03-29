@@ -27,3 +27,8 @@ States have an update() where you can change the behaviour of the robot.
 When the bool isFinished() returns true, the Controller whill advance to the next state.
 
 
+-- Execute details --
+colcon build --packages-select Controller
+. install/setup.bash
+ros2 run Controller Controller
+
