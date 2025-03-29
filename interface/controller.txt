@@ -1,0 +1,27 @@
+
+This documents aims to explain the class structure of the controller.
+
+-- General idea -- 
+The robot is controlled by a state machine.
+The main controller orchestrates the transitions of the state machine.
+Controllers act as fascade to the nodes. This way states can call methods, instead of subscribing to topics.
+States define what the robot should be doing, while in that state.
+
+-- Controller --
+The Controller defines in which state the robot is.
+When a state is finished, it decides to which state to transit.
+Controller will call update() on the current state, if it is not finished.
+If it is, it will advance to the next state.
+
+-- Controllers --
+The controllers subscribe to topics to communicate with hardware.
+They have methods to abstract the implementation of the topics, this way states don't have to worry about specifics.
+
+-- States --
+States define what the robot should do when in that state.
+In the constructor relevant controllers are passed in. To which the state can call methods, to operate the robot.
+Also the logger from Controller is passed in, for debugging.
+States have an update() where you can change the behaviour of the robot.
+When the bool isFinished() returns true, the Controller whill advance to the next state.
+
+

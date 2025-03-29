@@ -51,11 +51,15 @@ class Controller(Node):
     Method to set current state
     """
     def set_state(self, next_state : State):
+
         if(self.current_state is None):
             self.get_logger().info(f"Going to state {next_state.name}")
         else:
+            self.current_state.stop()
             self.get_logger().info(f"Going from state {self.current_state.name} to state {next_state.name}")
+
         self.current_state = next_state
+        self.current_state.start()
 
     def destroy_nodes(self):
         #Since there are multiple nodes

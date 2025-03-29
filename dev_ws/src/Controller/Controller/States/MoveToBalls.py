@@ -2,23 +2,35 @@
 from .State import *
 
 """
-First state of robot
-Robot should start rotating.
-Once a ball is found the controller should move on to the next state
+Once a ball is found, and centered move forward to intercept the ball.
 """
 class MoveToBalls(State):
 
-
+    """
+    Moving to balls needs the wheels, and sensor for distance
+    params:
+        wheelController
+        # DistanceSensorController
+    """
     def __init__(self, logger, wheelController):
         super().__init__("Move to balls", logger)
         self.wheelController = wheelController
 
-        self.logger.info("Moving forward")
+    """
+    start moving forward
+    """
+    def start(self):
+        self.logger.info("starting state move to balls")
         self.wheelController.move_forward()
-
 
     def update(self):
         pass
+
+    """
+    When the state stops, make sure to stop the wheels
+    """
+    def stop(self):
+        self.wheelController.stop()
 
     def isFinished(self):
         #Something like distance sensor == small

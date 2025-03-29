@@ -41,6 +41,12 @@ class WheelController(Node):
         self.__publish_string("RotateCW")
 
     """
+    Stop the robot
+    """
+    def stop(self):
+        self.__publish_string("stop")
+
+    """
     Private method, do not call
     """
     def __publish_string(self, string):
