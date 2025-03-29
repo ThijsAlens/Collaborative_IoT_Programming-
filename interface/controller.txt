@@ -7,6 +7,8 @@ The main controller orchestrates the transitions of the state machine.
 Controllers act as fascade to the nodes. This way states can call methods, instead of subscribing to topics.
 States define what the robot should be doing, while in that state.
 
+methods beginning '_' are intended to be private, do not call them outside of the class.
+
 -- Controller --
 The Controller defines in which state the robot is.
 When a state is finished, it decides to which state to transit.

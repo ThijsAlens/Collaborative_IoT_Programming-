@@ -25,31 +25,31 @@ class WheelController(Node):
     Move robot forward
     """
     def move_forward(self):
-        self.__publish_string("moveForward")
+        self._publish_string("moveForward")
 
     """
     Move robot backwards
     """
     def move_backwards(self):
-        self.__publish_string("moveBackwards")
+        self._publish_string("moveBackwards")
 
     
     """
     Rotate robot clockwise
     """
     def rotate_clockwise(self):
-        self.__publish_string("RotateCW")
+        self._publish_string("RotateCW")
 
     """
     Stop the robot
     """
     def stop(self):
-        self.__publish_string("stop")
+        self._publish_string("stop")
 
     """
     Private method, do not call
     """
-    def __publish_string(self, string):
+    def _publish_string(self, string):
         msg = String()
         msg.data = string
         self.publisher.publish(msg)
