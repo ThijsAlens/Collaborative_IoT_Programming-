@@ -28,8 +28,14 @@ class Controller(Node):
         self.wheelController = WheelController()
         self.ballInferenceController = BallInferenceController()
 
+        self.current_state_index = 0
+        self.states = [
+            LookForBalls(self.get_logger(), self.ballInferenceController, self.wheelController),
+            MoveToBalls(self.get_logger(), self.wheelController)
+        ]
+
         self.current_state = None
-        self.set_state(LookForBalls(self.get_logger(), self.ballInferenceController, self.wheelController))
+        self.set_state(states[current_state_index])
 
         self.create_timer(0.5, self.update)
 
@@ -39,18 +45,19 @@ class Controller(Node):
     """
     def update(self):
 
-        if(not self.current_state.isFinished()):
-            #If the state is not finished, update it
+        if(self.current_state.isFinished()):
+            #if state is finished move on to next state
+            self._find_next_state()
+            
+        else:
+            #if not finished, update
             self.get_logger().info("Running update on state " + self.current_state.name)
             self.current_state.update()
-        else:
-            #else we can move on to the new state
-            pass
 
     """
     Method to set current state
     """
-    def set_state(self, next_state : State):
+    def _set_state(self, next_state : State):
 
         if(self.current_state is None):
             self.get_logger().info(f"Going to state {next_state.name}")
@@ -60,6 +67,14 @@ class Controller(Node):
 
         self.current_state = next_state
         self.current_state.start()
+
+    """
+    Find and set next state
+    """
+    def _find_next_state(self):
+        self.current_state_index = (self.current_state_index + 1) % len(self.states)
+        self._set_state(self.states[self.current_state_index])
+
 
     def destroy_nodes(self):
         #Since there are multiple nodes
