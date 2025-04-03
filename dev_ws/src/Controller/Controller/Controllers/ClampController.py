@@ -22,13 +22,13 @@ class ClampController(Node):
     """
     Open clamp (unsqueeze)
     """
-    def move_backwards(self):
+    def open_clamp(self):
         self._publish_string("open")
         
     """
     Close clamp (squeeze)
     """
-    def move_forward(self):
+    def close_clamp(self):
         self._publish_string("close")
 
     """
