@@ -11,11 +11,7 @@ SERVO_PIN = 18 #The GPIO Pin connected to the clamp
 class ClampSubscriber(Node):
     def __init__(self):
         super().__init__('clamp_subscriber')
-        self.subscription = self.create_subscription(
-        String,
-        'topic',
-        self.listener_callback,
-        10)
+        self.subscription = self.create_subscription(String, 'clamp', self.listener_callback, 10)
         self.subscription # prevent unused variable warning
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(SERVO_PIN, GPIO.OUT)

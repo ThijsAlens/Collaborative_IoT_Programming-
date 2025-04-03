@@ -7,7 +7,7 @@ class ClampPublisher(Node):
         super().__init__('clamp_publisher') # Argument is name of node
         # Declares that node publishes messages of type String, over a topic
         # named topic and the queue size is 10 (QoS)
-        self.publisher_ = self.create_publisher(String, 'topic', 10)
+        self.publisher_ = self.create_publisher(String, 'clamp', 10)
         timer_period = 2 #seconds
         self.timer = self.create_timer(timer_period, self.send_command)
         self.state = 'open'
