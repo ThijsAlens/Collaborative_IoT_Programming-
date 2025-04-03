@@ -25,7 +25,7 @@ class BallInference(Node):
     def __init__(self):
         super().__init__("BallInference")
 
-        self.publisher = self.create_publisher(Bool, 'ballInference', 10)
+        self.publisher = self.create_publisher(tuple[bool, int], 'inferenceBall', 10)
 
         print("Created BallInference node")
 
@@ -39,16 +39,28 @@ class BallInference(Node):
         self.bridge = CvBridge()
 
     def listener_callback(self, msg):
-        ball_detected = self.process_image(msg)
+        ball_detected, posRelativeToCamera = self.process_image(msg)
 
-        output_msg = Bool()
-        output_msg.data = ball_detected
+        output_msg = tuple[bool, int]
+        output_msg.data = ball_detected, posRelativeToCamera
         self.get_logger().info("Calling inference; detected ball = " + str(ball_detected))
         self.publisher.publish(output_msg)
 
 
-    def process_image(self,image):
-    
+    def process_image(self, image: Image) -> tuple[bool, int]:
+
+        """
+        Function to detect the ball and its direction relative to camera
+
+        
+        Parameters
+            image (Image): The image in which to detect the ball
+
+        
+        Returns
+            tuple[bool, int]: A tuple containing a boolean indicating if an ball was detected and direction from the center
+        """
+        
         # Convert image
         cv_image = self.bridge.imgmsg_to_cv2(image)
 
@@ -97,14 +109,7 @@ class BallInference(Node):
                 if(density > 0.6):
                     masks_circles = masks_circles + mask_visualisation
                     found_ball = True
-
-        return found_ball
-
-
-
-
-
-
-
-
+                    distance = x - (image.width/2)
+                    break
+        return found_ball, distance
 
