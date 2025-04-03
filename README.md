@@ -12,3 +12,6 @@ Camera frames are uploaded to the topic **getImage**
 
 ### Run ball_inference 
 ```ros2 run ball_inference ball_inference```
+
+### Run Aruco_detector
+```ros2 run aruco_detection detector```
