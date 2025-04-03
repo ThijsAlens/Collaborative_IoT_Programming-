@@ -27,6 +27,8 @@ class Controller(Node):
         #Create controllers, which will internally subscribe to topics
         self.wheelController = WheelController()
         self.ballInferenceController = BallInferenceController()
+        self.arucoInferenceController = ArucoInferenceController()
+        self.clampController = ClampController()
 
         self.current_state_index = 0
         self.states = [
@@ -35,7 +37,7 @@ class Controller(Node):
         ]
 
         self.current_state = None
-        self.set_state(states[current_state_index])
+        self._set_state(self.states[self.current_state_index])
 
         self.create_timer(0.5, self.update)
 
