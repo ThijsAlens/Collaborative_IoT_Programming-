@@ -2,23 +2,37 @@ import rclpy
 from rclpy.node import Node
 import cv2
 import numpy as np
+from sensor_msgs.msg import Image
+from cv_bridge import CvBridge
 
 class ArucoDetector(Node):
     def __init__(self):
         super().__init__('aruco_detector')
 
-        # Define the dictionary and parameters for ArUco marker detection
-        self.aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
-        self.parameters = cv2.aruco.DetectorParameters_create()  # Updated line
+        self.subscription = self.create_subscription(
+            Image, 
+            "getImage",
+            self.listener_callback,
+            10
+        )
 
-    def process_image(self, image_path):
+        self.bridge = CvBridge()
+
+        # # Define the dictionary and parameters for ArUco marker detection
+        # self.aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
+        # self.parameters = cv2.aruco.DetectorParameters_create()  # Updated line
+
+    def listener_callback(self, msg):
+        self.process_image(msg)
+
+    def process_image(self, image):
         try:
             # Load the image (you can change this to an encoded image if you prefer)
-            try:
-                cv_image = cv2.imread(image_path)
-            except:
-                self.get_logger().error(f"Failed to load image")
-                return
+            cv_image = self.bridge.imgmsg_to_cv2(image)
+            
+            cv2.imshow("camera", cv_image)
+            cv2.waitKey(1)
+
             # Resize image to 640x480 (optional)
             #cv_image_resized = cv2.resize(cv_image, (640, 480))
             # Detect ArUco markers
@@ -66,10 +80,8 @@ class ArucoDetector(Node):
 def main(args=None):
     rclpy.init(args=args)
     aruco_detector = ArucoDetector()
-    image_path = '/home/student/Documents/IoT/codebase/Collaborative_IoT_Programming-/dev_ws/src/aruco_detection/aruco_detection/image2.jpg'
-    # Here, we call the process_image function with a specific image file
-    aruco_detector.process_image(image_path)  # You can change this path as needed
 
+    rclpy.spin(aruco_detector)
     # Cleanup
     aruco_detector.destroy_node()
     rclpy.shutdown()
