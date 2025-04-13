@@ -10,29 +10,27 @@ They can call methods on this class, which will transmit to a topic.
 """
 class UltrasoundInferenceController(Node):
 
-#nog aan te werken
     def __init__(self):
 
         super().__init__("UltrasoundInferenceController")
 
+        self.distance = 0
+        self.speed = 0
 
-        self.publisher = self.create_publisher(
+        self.subscription = self.create_subscription(
             Int32MulitArray, 
             "read_ultrasound_sensor",
+            self.__InferenceCallback,
             10
         )
 
-    """
-    Distance from US
-    """
-    def distance(self):
         self._publish_number()
 
 
     """
     Private method, do not call
     """
-    def _publish_number(self, number):
-        msg = Int32()
-        msg.data = number
-        self.publisher.publish(msg)
+    def __InferenceCallback(self, msg):
+        self.distance = msg.data[0] 
+        self.speed = msg.data[1] 
+
