@@ -3,6 +3,7 @@ from rclpy.node import Node
 import cv2
 import numpy as np
 from sensor_msgs.msg import Image
+from custom_msg_aruco.msg import PositionStatus
 from cv_bridge import CvBridge
 
 class ArucoDetector(Node):
@@ -16,14 +17,20 @@ class ArucoDetector(Node):
             10
         )
 
+        self.publisher = self.create_publisher(PositionStatus, 'arucoDetection', 10)
+
         self.bridge = CvBridge()
 
         # # Define the dictionary and parameters for ArUco marker detection
         # self.aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
-        # self.parameters = cv2.aruco.DetectorParameters_create()  # Updated line
-
+        # self.parameters = cv2.aruco.DetectorParameters_create()  # Updated line  
+    
     def listener_callback(self, msg):
-        self.process_image(msg)
+        output_msg = PositionStatus()
+        output_msg.found, output_msg.x, output_msg.y = self.process_image(msg)
+        self.get_logger().info("from ARUCO DETECTOR, Sending: found = " + str(output_msg.found) + " | x = " + str(output_msg.x) + " | y = " + str(output_msg.y))
+
+        self.publisher.publish(output_msg)
 
     def process_image(self, image):
         try:
@@ -36,10 +43,12 @@ class ArucoDetector(Node):
             # Resize image to 640x480 (optional)
             #cv_image_resized = cv2.resize(cv_image, (640, 480))
             # Detect ArUco markers
-            detected = self.detect_ARUCO(cv_image)
+            #detected, position = self.detect_ARUCO(cv_image)
+            return self.detect_ARUCO(cv_image)
 
             # Log the result of the detection
-            self.get_logger().info(f"Detection Result: {detected}")
+            #self.get_logger().info(f"Detection Result: {detected}")
+            #return detected, position
 
         except Exception as e:
             self.get_logger().error(f"Error in processing image: {e}")
