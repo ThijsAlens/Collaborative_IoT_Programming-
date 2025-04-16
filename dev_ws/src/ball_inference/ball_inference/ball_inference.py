@@ -8,6 +8,7 @@ from ament_index_python.packages import get_package_share_directory
 import cv2
 import numpy as np
 from cv_bridge import CvBridge
+from custom_msg_aruco.msg import PositionStatus
 
 
 def main(args = None):
@@ -25,7 +26,7 @@ class BallInference(Node):
     def __init__(self):
         super().__init__("BallInference")
 
-        self.publisher = self.create_publisher(Bool, 'ballInference', 10)
+        self.publisher = self.create_publisher(PositionStatus, 'ballInference', 10)
 
         print("Created BallInference node")
 
@@ -39,11 +40,10 @@ class BallInference(Node):
         self.bridge = CvBridge()
 
     def listener_callback(self, msg):
-        ball_detected = self.process_image(msg)
 
-        output_msg = Bool()
-        output_msg.data = ball_detected
-        self.get_logger().info("Calling inference; detected ball = " + str(ball_detected))
+        output_msg = PositionStatus()
+        output_msg.found, output_msg.x, output_msg.y = self.process_image(msg)
+        self.get_logger().info("Calling inference; detected ball = " + str(output_msg.found) + " at " + str(output_msg.x) + " " + str(output_msg.y))
         self.publisher.publish(output_msg)
 
 
@@ -97,8 +97,10 @@ class BallInference(Node):
                 if(density > 0.6):
                     masks_circles = masks_circles + mask_visualisation
                     found_ball = True
+                if(found_ball):
+                    return found_ball, center
 
-        return found_ball
+        return False, (0,0)
 
 
 
