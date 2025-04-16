@@ -5,30 +5,30 @@ import time
 from std_msgs.msg import Int32MultiArray
 
 #uncommand voor pins
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 # assign GPIO Pins
-#GPIO_TRIGGER = 18
-#GPIO_ECHO = 24
+GPIO_TRIGGER = 40
+GPIO_ECHO = 38
 
 
 class UltrasonicPublisher(Node):
 
     def __init__(self): 
         #uncommand voor pins
-        #self.trigger = GPIO_TRIGGER
-        #self.echo = GPIO_ECHO
+        self.trigger = GPIO_TRIGGER
+        self.echo = GPIO_ECHO
         
         self.timeout = 0.05
         
         #uncommand voor pins
-        # GPIO Modus (BOARD / BCM)
-        #GPIO.setmode(GPIO.BCM)
-        #GPIO.setwarnings(False)
+        #GPIO Modus (BOARD / BCM)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
 
         # Set direction of GPIO pins (IN --> Input / OUT --> Output)
-        #GPIO.setup(self.trigger, GPIO.OUT)
-        #GPIO.setup(self.echo, GPIO.IN)
+        GPIO.setup(self.trigger, GPIO.OUT)
+        GPIO.setup(self.echo, GPIO.IN)
 
         super().__init__('ultrasound_publisher')
         self.publisher_ = self.create_publisher(Int32MultiArray, 'read_ultrasound_sensor', 10)
@@ -48,46 +48,46 @@ class UltrasonicPublisher(Node):
 
     def distance(self):
 #-------uncommand voor pins-------------------------------------------
-        #GPIO.output(self.trigger, True) # set trigger to HIGH
+        GPIO.output(self.trigger, True) # set trigger to HIGH
 
         # set trigger after 0.01 ms to LOW
-        #time.sleep(0.00001)
-        #GPIO.output(self.trigger, False)
+        time.sleep(0.00001)
+        GPIO.output(self.trigger, False)
 
-        #startTime = time.time()
-        #arrivalTime = time.time()
+        startTime = time.time()
+        arrivalTime = time.time()
 
-        #timeout_start = time.time()
+        timeout_start = time.time()
 
         # store startTime
-        #while GPIO.input(self.echo) == 0:
-            #startTime = time.time()
+        while GPIO.input(self.echo) == 0:
+            startTime = time.time()
 
-            #if startTime - timeout_start > self.timeout:
-                #return -1
+            if startTime - timeout_start > self.timeout:
+                return -1
 
         # store arrivalTime
-        #while GPIO.input(self.echo) == 1:
-            #arrivalTime = time.time()
+        while GPIO.input(self.echo) == 1:
+            arrivalTime = time.time()
 
-            #if startTime - timeout_start > self.timeout:
-                #return -1
+            if startTime - timeout_start > self.timeout:
+                return -1
 #----------------------------------------------------------------------
 
 #-------test-----------------------------------------------------------
-        timeout_start = time.time()
-        time.sleep(0.00052)
-        startTime = time.time()
+        #timeout_start = time.time()
+        #time.sleep(0.00052)
+        #startTime = time.time()
 
-        if startTime - timeout_start > self.timeout:
-               return -1
+        #if startTime - timeout_start > self.timeout:
+               #return -1
 
         # store arrivalTime
-        time.sleep(0.0005)
-        arrivalTime = time.time()
+        #time.sleep(0.0005)
+        #arrivalTime = time.time()
 
-        if startTime - timeout_start > self.timeout:
-                return -1
+        #if startTime - timeout_start > self.timeout:
+                #return -1
 #---------------------------------------------------------------------        
         
         if startTime != 0 and arrivalTime != 0:
@@ -113,8 +113,8 @@ class UltrasonicPublisher(Node):
 
         end_time = time.time()
 
-        speed = (end_distance - start_distance) / 1.0   # m/s
-        #speed = (end_distance - start_distance) / (start_time-end_time)   # m/s
+        #speed = (end_distance - start_distance) / 1.0   # m/s
+        speed = (end_distance - start_distance) / (start_time-end_time)   # m/s
 
         return speed
 
