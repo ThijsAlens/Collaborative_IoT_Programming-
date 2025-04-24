@@ -1,7 +1,8 @@
 # Collaborative IoT Programming-
 =======
 ## Available topics
-> **getImage**, *type: sensor_msgs.msg.Image*, consists of the frames written by the camera. 
+- **getImage**, *type: sensor_msgs.msg.Image*, consists of the frames written by the camera.  
+- **arucoDetection**, *type: custom_msg_aruco.msg.PositionStatus*, consist of a bool (found) and a position (x and y)
 
 ## Running the packages
 
@@ -16,14 +17,18 @@ Camera frames are uploaded to the topic **getImage**
 ### Run Aruco_detector
 ```ros2 run aruco_detection detector```
 
-## Run Wheels package
-
+### Run Wheels package
 ```ros2 run wheels WheelsPublisher``` 
 
-## Runultrasound
+### Run ultrasound
 ```ros2 run ultrasound USPublisher```
 
+It publishes an array of speed and distance. Speed first then distance.
 
-## Working of the package of ultrasound
+## Custom msgs found in ```custom_msg_aruco.msg```
 
-It's publish an array of speed and distance. Speed first then distance.
+**PositionStatus** consists of:
+- *found [Bool]*  
+- *x [Int32]*  
+- *y [Int32]* 
+
