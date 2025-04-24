@@ -12,9 +12,10 @@ class MoveToBalls(State):
         wheelController
         # DistanceSensorController
     """
-    def __init__(self, logger, wheelController):
+    def __init__(self, logger, wheelController, ultrasoundsController):
         super().__init__("Move to balls", logger)
         self.wheelController = wheelController
+        self.ultrasoundsController = ultrasoundsController
 
     """
     start moving forward
@@ -33,5 +34,4 @@ class MoveToBalls(State):
         self.wheelController.stop()
 
     def isFinished(self):
-        #Something like distance sensor == small
-        return False
+        return self.ultrasoundsController < 3
