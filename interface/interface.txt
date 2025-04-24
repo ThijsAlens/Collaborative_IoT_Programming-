@@ -2,56 +2,13 @@
 WHEELS
 ------
 
-moveForward()
-"""
-    move forward indefinitly
-args:
-    None
-returns:
-    0 if success
-    1 if failed
-"""
+To move the wheels send one of the following Strings to the "moveWheels" topic:
 
-moveBackward()
-"""
-    move backwards indefinitly
-args:
-    None
-returns:
-    0 if success
-    1 if failed
-"""
-
-
-rotateCW()
-"""
-rotate CW indefinitly
-args:
-    None
-returns:
-    0 if success
-    1 if failed
-"""
-
-rotateCCW()
-"""
-    rotate CCW indefinitly
-args:
-    None
-returns:
-    0 if success
-    1 if failed
-"""
-
-stop()
-"""
-    stop all movement
-args:
-    None
-returns:
-    0 if success
-    1 if failed
-"""
+moveForward
+moveBackward
+rotateCW
+rotateCCW
+stop
 
 ------
 CAMERA
