@@ -20,8 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-        'publisher = clamp.publisher:main',
-        'subscriber = clamp.subscriber:main'
+        'clampSubscriber = clamp.clampSubscriber:main'
         ],
     },
 )
