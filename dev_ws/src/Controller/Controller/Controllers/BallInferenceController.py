@@ -29,4 +29,3 @@ class BallInferenceController(Node):
     """
     def __InferenceCallback(self, msg):
         self.ballFound = msg.found
-        print("data from balls: "+ str(msg.found))

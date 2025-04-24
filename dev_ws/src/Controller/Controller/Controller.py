@@ -52,11 +52,11 @@ class Controller(Node):
     """
     def update(self):
 
-        rclpy.spin_once(self.ballInferenceController)
-        rclpy.spin_once(self.wheelController)
-        rclpy.spin_once(self.arucoInferenceController)
-        rclpy.spin_once(self.arucoInferenceController)
-        rclpy.spin_once(self.ultrasoundsController)
+        rclpy.spin_once(self.ballInferenceController, timeout_sec=0.25)
+        #rclpy.spin_once(self.wheelController)
+        rclpy.spin_once(self.arucoInferenceController, timeout_sec=0.25)
+        #rclpy.spin_once(self.clampController)
+        #rclpy.spin_once(self.ultrasoundsController, timeout_sec=0.25)
 
         if(self.current_state.isFinished()):
             #if state is finished move on to next state

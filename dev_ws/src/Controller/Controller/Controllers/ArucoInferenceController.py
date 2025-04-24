@@ -1,7 +1,7 @@
 
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Bool
+from custom_msg_aruco.msg import PositionStatus
 
 """
 Controller for the ball inference
@@ -19,8 +19,8 @@ class ArucoInferenceController(Node):
         self.aruco_position: tuple[float, float]
 
         self.create_subscription(
-            Bool,
-            "aruco_detection",
+            PositionStatus,
+            "arucoDetection",
             self.__InferenceCallback,
             10
         )

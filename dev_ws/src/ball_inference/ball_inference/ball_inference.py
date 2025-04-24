@@ -81,7 +81,7 @@ class BallInference(Node):
             area = cv2.contourArea(contour)
 
             # Filter out small or excessively large shapes
-            if 500 < area < 50000:
+            if 200 < area < 50000:
                 # Fit a circle around the contour
                 (x, y), radius = cv2.minEnclosingCircle(contour)
                 center = (int(x), int(y))

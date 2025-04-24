@@ -34,4 +34,4 @@ class MoveToBalls(State):
         self.wheelController.stop()
 
     def isFinished(self):
-        return self.ultrasoundsController < 3
+        return self.ultrasoundsController.distance < 3
