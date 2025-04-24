@@ -1,8 +1,9 @@
 # Collaborative IoT Programming-
-=======
+
 ## Available topics
 - **getImage**, *type: sensor_msgs.msg.Image*, consists of the frames written by the camera.  
 - **arucoDetection**, *type: custom_msg_aruco.msg.PositionStatus*, consist of a bool (found) and a position (x and y)
+- **moveWheels**, *type: String*, Send: moveForward | moveBackward | rotateCCW | rotateCW | stop. 
 
 ## Running the packages
 
@@ -18,7 +19,19 @@ Camera frames are uploaded to the topic **getImage**
 ```ros2 run aruco_detection detector```
 
 ### Run Wheels package
-```ros2 run wheels WheelsPublisher``` 
+```ros2 run wheels WheelsPublisher```
+
+To move the wheels send one of the following Strings to the "moveWheels" topic:
+ 
+ - moveForward
+ 
+ - moveBackward
+ 
+ - rotateCW
+ 
+ - rotateCCW
+ 
+ - stop
 
 ### Run ultrasound
 ```ros2 run ultrasound USPublisher```
