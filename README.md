@@ -1,5 +1,7 @@
 # Collaborative IoT Programming-
 
+=======
+
 ## Available topics
 - **getImage**, *type: sensor_msgs.msg.Image*, consists of the frames written by the camera.  
 - **arucoDetection**, *type: custom_msg_aruco.msg.PositionStatus*, consist of a bool (found) and a position (x and y)
@@ -45,3 +47,10 @@ It publishes an array of speed and distance. Speed first then distance.
 - *x [Int32]*  
 - *y [Int32]* 
 
+## Running the clamb
+
+To run the package use the following command:
+
+```ros2 run clamp ClampPublisher```
+
+```ros2 run clamp ClampSubscriber``` 
