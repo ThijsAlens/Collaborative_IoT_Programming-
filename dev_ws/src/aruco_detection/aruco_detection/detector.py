@@ -27,7 +27,8 @@ class ArucoDetector(Node):
     
     def listener_callback(self, msg):
         output_msg = PositionStatus()
-        output_msg.found, output_msg.x, output_msg.y = self.process_image(msg)
+        output_msg.found, center = self.process_image(msg)
+        output_msg.x, output_msg.y = center
         self.get_logger().info("from ARUCO DETECTOR, Sending: found = " + str(output_msg.found) + " | x = " + str(output_msg.x) + " | y = " + str(output_msg.y))
 
         self.publisher.publish(output_msg)
@@ -37,8 +38,8 @@ class ArucoDetector(Node):
             # Load the image (you can change this to an encoded image if you prefer)
             cv_image = self.bridge.imgmsg_to_cv2(image)
             
-            cv2.imshow("camera", cv_image)
-            cv2.waitKey(1)
+            # cv2.imshow("camera", cv_image)
+            # cv2.waitKey(1)
 
             # Resize image to 640x480 (optional)
             #cv_image_resized = cv2.resize(cv_image, (640, 480))

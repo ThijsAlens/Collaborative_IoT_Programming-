@@ -18,13 +18,13 @@ class UltrasoundInferenceController(Node):
         self.speed = 0
 
         self.subscription = self.create_subscription(
-            Int32MulitArray, 
+            Int32MultiArray, 
             "read_ultrasound_sensor",
             self.__InferenceCallback,
             10
         )
 
-        self._publish_number()
+        #self._publish_number()
 
 
     """

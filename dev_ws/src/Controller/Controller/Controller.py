@@ -34,10 +34,10 @@ class Controller(Node):
         self.current_state_index = 0
         self.states = [
             LookForBalls(self.get_logger(), self.ballInferenceController, self.wheelController),
-            MoveToBalls(self.get_logger(), self.wheelController),
+            MoveToBalls(self.get_logger(), self.wheelController, self.ultrasoundsController),
             ClampBalls(self.get_logger(), self.clampController),
             LookForAruco(self.get_logger(), self.arucoInferenceController, self.wheelController),
-            MoveToBalls(self.get_logger(), self.wheelController),
+            MoveToBalls(self.get_logger(), self.wheelController, self.ultrasoundsController),
             UnClampBalls(self.get_logger(), self.clampController)
         ]
 

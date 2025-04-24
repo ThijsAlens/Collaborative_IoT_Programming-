@@ -42,7 +42,8 @@ class BallInference(Node):
     def listener_callback(self, msg):
 
         output_msg = PositionStatus()
-        output_msg.found, output_msg.x, output_msg.y = self.process_image(msg)
+        output_msg.found, center = self.process_image(msg)
+        output_msg.x, output_msg.y = center
         self.get_logger().info("Calling inference; detected ball = " + str(output_msg.found) + " at " + str(output_msg.x) + " " + str(output_msg.y))
         self.publisher.publish(output_msg)
 
@@ -52,8 +53,8 @@ class BallInference(Node):
         # Convert image
         cv_image = self.bridge.imgmsg_to_cv2(image)
 
-        cv2.imshow("camera", cv_image)
-        cv2.waitKey(1)
+        # cv2.imshow("camera", cv_image)
+        # cv2.waitKey(1)
 
         # Blur to reduce noise
         blurred = cv2.GaussianBlur(cv_image, (11, 11), 0)
