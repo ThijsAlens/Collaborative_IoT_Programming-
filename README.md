@@ -1,5 +1,6 @@
 # Collaborative IoT Programming-
 
+=======
 ## Available topics
 > **getImage**, *type: sensor_msgs.msg.Image*, consists of the frames written by the camera. 
 
@@ -15,3 +16,7 @@ Camera frames are uploaded to the topic **getImage**
 
 ### Run Aruco_detector
 ```ros2 run aruco_detection detector```
+
+## Run Wheels package
+
+```ros2 run wheels WheelsPublisher``` 
