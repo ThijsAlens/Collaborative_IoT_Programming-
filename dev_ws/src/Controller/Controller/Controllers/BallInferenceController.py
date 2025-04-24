@@ -1,8 +1,7 @@
 
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Bool
-
+from custom_msg_aruco.msg import PositionStatus
 """
 Controller for the ball inference
 It will subscribe to topics regarding the Ball inference
@@ -14,21 +13,20 @@ class BallInferenceController(Node):
     def __init__(self):
 
         super().__init__("BallInferenceController")
-
+        
         self.ballFound = False
 
-        self.create_subscription(
-            Bool,
+        self.subscription = self.create_subscription(
+            PositionStatus,
             "ballInference",
             self.__InferenceCallback,
             10
         )
 
+
     """
     Private method, do not call
     """
     def __InferenceCallback(self, msg):
-        self.ballFound = msg.data
-
-
-
+        self.ballFound = msg.found
+        print("data from balls: "+ str(msg.found))

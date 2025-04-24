@@ -44,13 +44,19 @@ class Controller(Node):
         self.current_state = None
         self._set_state(self.states[self.current_state_index])
 
-        self.create_timer(0.5, self.update)
+        self.create_timer(0.25, self.update)
 
     
     """
     Update method for the states, and to know when to transition states
     """
     def update(self):
+
+        rclpy.spin_once(self.ballInferenceController)
+        rclpy.spin_once(self.wheelController)
+        rclpy.spin_once(self.arucoInferenceController)
+        rclpy.spin_once(self.arucoInferenceController)
+        rclpy.spin_once(self.ultrasoundsController)
 
         if(self.current_state.isFinished()):
             #if state is finished move on to next state
@@ -60,6 +66,7 @@ class Controller(Node):
             #if not finished, update
             self.get_logger().info("Running update on state " + self.current_state.name)
             self.current_state.update()
+
 
     """
     Method to set current state
