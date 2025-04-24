@@ -6,7 +6,7 @@ import time
 
 #hightech hs322HD type servo
 #TODO WHICH PIN TO USE
-SERVO_PIN = 18 #The GPIO Pin connected to the clamp
+SERVO_PIN = 12 #The GPIO Pin connected to the clamp
 
 class ClampSubscriber(Node):
     def __init__(self):
@@ -27,13 +27,13 @@ class ClampSubscriber(Node):
             self.get_logger().info('This data is not compatible: "%s"' % msg.data)
     def open_clamp(self):
         self.get_logger().info('opening...')
-        self.set_servo_angle(90)
+        self.set_servo_angle(180)
         #GPIO spin to command servo 
     def close_clamp(self):
         self.get_logger().info('closing...')
         self.set_servo_angle(0)
     def set_servo_angle(self,angle):
-        duty_cycle = 2 + (angle / 18)
+        duty_cycle = 1 + (angle / 180)*10
         self.pwm.ChangeDutyCycle(duty_cycle)
         time.sleep(2) # Wait for servo to finish (this time is randomly chosen right now)
         self.pwm.ChangeDutyCycle(0) #Stop servo
