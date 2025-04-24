@@ -29,11 +29,16 @@ class Controller(Node):
         self.ballInferenceController = BallInferenceController()
         self.arucoInferenceController = ArucoInferenceController()
         self.clampController = ClampController()
+        self.ultrasoundsController = UltrasoundInferenceController()
 
         self.current_state_index = 0
         self.states = [
             LookForBalls(self.get_logger(), self.ballInferenceController, self.wheelController),
-            MoveToBalls(self.get_logger(), self.wheelController)
+            MoveToBalls(self.get_logger(), self.wheelController),
+            ClampBalls(self.get_logger(), self.clampController),
+            LookForAruco(self.get_logger(), self.arucoInferenceController, self.wheelController),
+            MoveToBalls(self.get_logger(), self.wheelController),
+            UnClampBalls(self.get_logger(), self.clampController)
         ]
 
         self.current_state = None
