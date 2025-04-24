@@ -8,8 +8,8 @@ from std_msgs.msg import Int32MultiArray
 #import RPi.GPIO as GPIO
 
 # assign GPIO Pins
-#GPIO_TRIGGER = 18
-#GPIO_ECHO = 24
+#GPIO_TRIGGER = 21
+#GPIO_ECHO = 20
 
 
 class UltrasonicPublisher(Node):
