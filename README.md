@@ -1,30 +1,22 @@
 # Collaborative IoT Programming-
 
-## Running the package
+=======
+## Available topics
+> **getImage**, *type: sensor_msgs.msg.Image*, consists of the frames written by the camera. 
 
-To run the package use the following command:
+## Running the packages
+
+### Run the camera
+```ros2 run camera_read ImagePublisher``` 
+
+Camera frames are uploaded to the topic **getImage**
+
+### Run ball_inference 
+```ros2 run ball_inference ball_inference```
+
+### Run Aruco_detector
+```ros2 run aruco_detection detector```
+
+## Run Wheels package
 
 ```ros2 run wheels WheelsPublisher``` 
-
-## Who, what, how?
-
-### Sending information to move the wheels
-
-To move the wheels send one of the following Strings to the "moveWheels" topic:
-
-- moveForward
-
-- moveBackward
-
-- rotateCW
-
-- rotateCCW
-
-- stop
-
-This info can also be found in [interface.txt](https://github.com/ThijsAlens/Collaborative_IoT_Programming-/blob/wheels/interface/interface.txt).
-
-### General information
-
-The wheels package uses a timer to repeatedly send a Twist message to continously move the wheels.
-This may or may not be necessary, if not, remove the timer and timer_callback and place the publish method at the end of the listeren_callback function.
