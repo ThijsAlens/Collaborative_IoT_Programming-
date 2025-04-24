@@ -37,7 +37,7 @@ class ArucoDetector(Node):
             # Load the image (you can change this to an encoded image if you prefer)
             cv_image = self.bridge.imgmsg_to_cv2(image)
             
-            cv2.imshow("camera", cv_image)
+            #cv2.imshow("camera", cv_image)
             cv2.waitKey(1)
 
             # Resize image to 640x480 (optional)
@@ -53,7 +53,7 @@ class ArucoDetector(Node):
         except Exception as e:
             self.get_logger().error(f"Error in processing image: {e}")
 
-    def detect_ARUCO(self, image: np.ndarray) -> tuple[bool, tuple[int, int]]:
+    def detect_ARUCO(self, image: np.ndarray) -> list[any]:
         """
         Function to detect ARUCO markers in an image
         
@@ -82,9 +82,8 @@ class ArucoDetector(Node):
                     corner_points = corners[i][0]  # (4,2) array -> (x, y) coordinates of the 4 corners
                     center_x = int(np.mean(corner_points[:, 0]))
                     center_y = int(np.mean(corner_points[:, 1]))
-                    center = (center_x, center_y)
-                    return True, center
-        return False, (0, 0)
+                    return [True, center_x, center_y]
+        return [False, 0, 0]
 
 def main(args=None):
     rclpy.init(args=args)
