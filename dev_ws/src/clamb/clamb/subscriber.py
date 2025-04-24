@@ -3,9 +3,8 @@ from rclpy.node import Node
 from std_msgs.msg import String
 import RPi.GPIO as GPIO
 import time
-
-#hightech hs322HD type servo
-#TODO WHICH PIN TO USE
+ 
+#type of servo: hightech hs322HD type servo
 SERVO_PIN = 12 #The GPIO Pin connected to the clamp
 
 class ClampSubscriber(Node):
