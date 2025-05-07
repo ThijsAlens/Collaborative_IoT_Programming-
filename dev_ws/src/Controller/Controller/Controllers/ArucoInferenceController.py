@@ -29,9 +29,8 @@ class ArucoInferenceController(Node):
     Private method, do not call
     """
     def __InferenceCallback(self, msg):
-        # depends on what is send by the aruco publisher
-        # the variables self.aruco_found and self.aruco_position
-        pass
+        self.aruco_found = msg.found
+        self.position = (msg.x, msg.y)
 
 
 
