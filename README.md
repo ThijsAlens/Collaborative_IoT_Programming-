@@ -45,3 +45,7 @@ It publishes an array of speed and distance. Speed first then distance.
 - *x [Int32]*  
 - *y [Int32]* 
 
+**UltrasoundData** consists of:
+- *speed [Int32]*  
+- *distance [Int32]* 
+

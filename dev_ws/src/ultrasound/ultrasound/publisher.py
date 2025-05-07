@@ -4,6 +4,8 @@ import sys
 import time
 from std_msgs.msg import Int32MultiArray
 
+from custom_msg_aruco.msg import UltrasoundData
+
 #uncommand voor pins
 #import RPi.GPIO as GPIO
 
@@ -31,20 +33,22 @@ class UltrasonicPublisher(Node):
         #GPIO.setup(self.echo, GPIO.IN)
 
         super().__init__('ultrasound_publisher')
-        self.publisher_ = self.create_publisher(Int32MultiArray, 'read_ultrasound_sensor', 10)
+        self.publisher_ = self.create_publisher(UltrasoundData, 'read_ultrasound_sensor', 10)
         timer_period = 0.5
         self.timer = self.create_timer(timer_period, self.read_sensor)
 
     def read_sensor(self):
-        msg = Int32MultiArray()
+        msg = UltrasoundData()
 
-        data = []
-        data.append(self.distance())
-        data.append(self.speed())
+        # data = []
+        # data.append(self.distance())
+        # data.append(self.speed())
 
-        msg_data = data
+        # msg_data = data   
+        msg.speed = int(self.speed())
+        msg.distance = int(self.distance())
         self.publisher_.publish(msg)
-        self.get_logger().info(f'Distance = {data[0]} cm and \n speed = {data[1]} m/s')
+        #self.get_logger().info(f'Distance = {msg.distance} cm and \n speed = {msg.speed} m/s')
 
     def distance(self):
 #-------uncommand voor pins-------------------------------------------
@@ -123,7 +127,7 @@ def main(args=None):
     ultrasound_publisher = UltrasonicPublisher()
     rclpy.spin(ultrasound_publisher)
 
-    minimal_publisher.destroy_node()
+    ultrasound_publisher.destroy_node()
     rclpy.shutdown()
 
 if __name__ == '__main__':

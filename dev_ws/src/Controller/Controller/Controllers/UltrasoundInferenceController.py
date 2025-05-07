@@ -3,6 +3,8 @@ from rclpy.node import Node
 from std_msgs.msg import Int32MultiArray
 from std_msgs.msg import Int32
 
+from custom_msg_aruco.msg import UltrasoundData
+
 """
 Controller for the ultrasound inference
 It will subscribe to topics regarding the ultrasound inference
@@ -18,7 +20,7 @@ class UltrasoundInferenceController(Node):
         self.speed = 0
 
         self.subscription = self.create_subscription(
-            Int32MultiArray, 
+            UltrasoundData, 
             "read_ultrasound_sensor",
             self.__InferenceCallback,
             10
@@ -31,9 +33,9 @@ class UltrasoundInferenceController(Node):
     Private method, do not call
     """
     def __InferenceCallback(self, msg):
-        if(len(msg.data) == 0):
-            return
 
-        self.distance = msg.data[0] 
-        self.speed = msg.data[1] 
+        self.distance = msg.distance
+        self.speed = msg.speed
+
+        #self.get_logger().info(f"RECIEVED: Distance: {self.distance}, speed: {self.speed}")
 
