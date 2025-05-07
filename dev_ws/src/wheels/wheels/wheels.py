@@ -20,6 +20,8 @@ class WheelsPublisher(Node):
             10
         )
         
+        self.get_logger().info('Starting wheel controller')
+
         # I believe you have to keep sending Twist messages to keep the wheels moving instead of a single message.
         #    -> I could be wrong :), in that case remove timer and publish message at end of listener_callback function.
         self.timer = self.create_timer(0.1, self.timer_callback)
@@ -29,6 +31,8 @@ class WheelsPublisher(Node):
         
     def listener_callback(self, msg):
         twist = Twist()
+
+        self.get_logger().info('Received Message; ' + str(msg))
 
         if msg.data == "moveForward":
             twist.linear.x = self.speed

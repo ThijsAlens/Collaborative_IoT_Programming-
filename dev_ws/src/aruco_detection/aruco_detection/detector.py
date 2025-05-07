@@ -54,7 +54,7 @@ class ArucoDetector(Node):
         except Exception as e:
             self.get_logger().error(f"Error in processing image: {e}")
 
-    def detect_ARUCO(self, image: np.ndarray) -> tuple[bool, tuple[int, int]]:
+    def detect_ARUCO(self, image: np.ndarray): # -> tuple(bool, tuple(int, int)):
         """
         Function to detect ARUCO markers in an image
         

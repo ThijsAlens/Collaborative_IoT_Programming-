@@ -31,6 +31,9 @@ class UltrasoundInferenceController(Node):
     Private method, do not call
     """
     def __InferenceCallback(self, msg):
+        if(len(msg.data) == 0):
+            return
+
         self.distance = msg.data[0] 
         self.speed = msg.data[1] 
 
