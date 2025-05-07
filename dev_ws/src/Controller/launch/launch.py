@@ -22,6 +22,11 @@ def generate_launch_description():
             name = 'aruco_decetion'
         ), 
         launch_ros.actions.Node(
+            package = 'clamp',
+            executable = 'clampSubscriber',
+            name = 'clamp'
+        ), 
+        launch_ros.actions.Node(
             package = 'wheels',
             executable = 'WheelsPublisher',
             name = 'wheels'
