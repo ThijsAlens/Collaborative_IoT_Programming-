@@ -2,6 +2,7 @@ import rclpy
 from rclpy.node import Node
 import cv2
 import numpy as np
+import random
 from sensor_msgs.msg import Image
 from custom_msg_aruco.msg import PositionStatus
 from cv_bridge import CvBridge
@@ -19,6 +20,8 @@ class ArucoDetector(Node):
 
         self.publisher = self.create_publisher(PositionStatus, 'arucoDetection', 10)
 
+        self.create_timer(0.25, self.tijdelijk)
+
         self.bridge = CvBridge()
 
         # # Define the dictionary and parameters for ArUco marker detection
@@ -27,7 +30,7 @@ class ArucoDetector(Node):
     
     def listener_callback(self, msg):
         output_msg = PositionStatus()
-        output_msg.found, center = self.process_image(msg)
+        output_msg.found: bool, center: tuple[int, int] = self.process_image(msg)
         output_msg.x, output_msg.y = center
         self.get_logger().info("from ARUCO DETECTOR, Sending: found = " + str(output_msg.found) + " | x = " + str(output_msg.x) + " | y = " + str(output_msg.y))
 

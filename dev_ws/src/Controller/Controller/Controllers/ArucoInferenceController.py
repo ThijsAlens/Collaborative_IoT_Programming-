@@ -16,7 +16,7 @@ class ArucoInferenceController(Node):
         super().__init__("ArucoController")
 
         self.aruco_found: bool = False
-        self.aruco_position: tuple[float, float]
+        self.aruco_position: tuple[int, int]
 
         self.create_subscription(
             PositionStatus,
@@ -31,6 +31,7 @@ class ArucoInferenceController(Node):
     def __InferenceCallback(self, msg):
         self.aruco_found = msg.found
         self.position = (msg.x, msg.y)
+        self.get_logger().info(f"ARUCO_controller heard:\tfound: {self.aruco_found}\t|\tposition: {self.position}")
 
 
 
