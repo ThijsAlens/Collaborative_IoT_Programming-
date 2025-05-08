@@ -12,10 +12,10 @@ class MoveToBalls(State):
         wheelController
         # DistanceSensorController
     """
-    def __init__(self, logger, wheelController, ultrasoundsController):
+    def __init__(self, logger, controller):
         super().__init__("Move to balls", logger)
-        self.wheelController = wheelController
-        self.ultrasoundsController = ultrasoundsController
+        self.wheelController = controller
+        self.ultrasoundsController = controller
 
     """
     start moving forward

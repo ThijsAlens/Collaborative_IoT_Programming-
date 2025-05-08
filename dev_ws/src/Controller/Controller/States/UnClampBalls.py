@@ -11,9 +11,9 @@ class UnClampBalls(State):
     params:
         clampController
     """
-    def __init__(self, logger, clampController):
+    def __init__(self, logger, controller):
         super().__init__("Ready to open clamp", logger)
-        self.clampController = clampController
+        self.clampController = controller
 
     """
     Open the clamp

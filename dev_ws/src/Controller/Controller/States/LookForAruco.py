@@ -18,10 +18,10 @@ class LookForAruco(State):
         ballInferenceConArucoInferenceController: Controller for finding aruco codes
         wheelController: Controller for the wheels
     """
-    def __init__(self, logger, arucoController, wheelController):
+    def __init__(self, logger, controller):
         super().__init__("Looking for the aruco code", logger)
-        self.aruco_controller = arucoController
-        self.wheel_controller = wheelController
+        self.aruco_controller = controller
+        self.wheel_controller = controller
 
     """
     When the state starts, start rotating.
