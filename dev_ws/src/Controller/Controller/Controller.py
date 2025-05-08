@@ -80,7 +80,7 @@ class Controller(Node):
 
         self.current_state = None
 
-        time.sleep(2)
+        time.sleep(5)
 
         self._set_state(self.states[self.current_state_index])
 
