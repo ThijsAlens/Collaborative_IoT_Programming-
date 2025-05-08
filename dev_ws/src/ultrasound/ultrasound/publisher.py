@@ -25,12 +25,12 @@ class UltrasonicPublisher(Node):
         
         #uncommand voor pins
         #GPIO Modus (BOARD / BCM)
-        #GPIO.setmode(GPIO.BCM)
-        #GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
 
-        # Set direction of GPIO pins (IN --> Input / OUT --> Output)
-        #GPIO.setup(self.trigger, GPIO.OUT)
-        #GPIO.setup(self.echo, GPIO.IN)
+        #Set direction of GPIO pins (IN --> Input / OUT --> Output)
+        GPIO.setup(self.trigger, GPIO.OUT)
+        GPIO.setup(self.echo, GPIO.IN)
 
         super().__init__('ultrasound_publisher')
         self.publisher_ = self.create_publisher(UltrasoundData, 'read_ultrasound_sensor', 10)
@@ -52,46 +52,46 @@ class UltrasonicPublisher(Node):
 
     def distance(self):
 #-------uncommand voor pins-------------------------------------------
-        # GPIO.output(self.trigger, True) # set trigger to HIGH
+        GPIO.output(self.trigger, True) # set trigger to HIGH
 
-        # # set trigger after 0.01 ms to LOW
-        # time.sleep(0.00001)
-        # GPIO.output(self.trigger, False)
+        # set trigger after 0.01 ms to LOW
+        time.sleep(0.00001)
+        GPIO.output(self.trigger, False)
 
-        # startTime = time.time()
-        # arrivalTime = time.time()
+        startTime = time.time()
+        arrivalTime = time.time()
 
-        # timeout_start = time.time()
+        timeout_start = time.time()
 
-        # # store startTime
-        # while GPIO.input(self.echo) == 0:
-        #     startTime = time.time()
+        # store startTime
+        while GPIO.input(self.echo) == 0:
+            startTime = time.time()
 
-        #     if startTime - timeout_start > self.timeout:
-        #         return -1
+            if startTime - timeout_start > self.timeout:
+                return -1
 
-        # # store arrivalTime
-        # while GPIO.input(self.echo) == 1:
-        #     arrivalTime = time.time()
+        # store arrivalTime
+        while GPIO.input(self.echo) == 1:
+            arrivalTime = time.time()
 
-        #     if startTime - timeout_start > self.timeout:
-        #         return -1
+            if startTime - timeout_start > self.timeout:
+                return -1
 #----------------------------------------------------------------------
 
 #-------test-----------------------------------------------------------
-        timeout_start = time.time()
-        time.sleep(0.00052)
-        startTime = time.time()
+        # timeout_start = time.time()
+        # time.sleep(0.00052)
+        # startTime = time.time()
 
-        if startTime - timeout_start > self.timeout:
-               return -1
+        # if startTime - timeout_start > self.timeout:
+        #        return -1
 
-        #store arrivalTime
-        time.sleep(0.0005)
-        arrivalTime = time.time()
+        # #store arrivalTime
+        # time.sleep(0.0005)
+        # arrivalTime = time.time()
 
-        if startTime - timeout_start > self.timeout:
-                return -1
+        # if startTime - timeout_start > self.timeout:
+        #         return -1
 #---------------------------------------------------------------------        
         
         if startTime != 0 and arrivalTime != 0:
