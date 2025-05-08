@@ -14,10 +14,10 @@ class LookForBalls(State):
         ballInferenceController: Controller for finding balls
         wheelController: Controller for the wheels
     """
-    def __init__(self, logger, ballInferenceController, wheelController):
+    def __init__(self, logger, controller):
         super().__init__("Looking for them balls", logger)
-        self.ballInferenceController = ballInferenceController
-        self.wheelController = wheelController
+        self.ballInferenceController = controller
+        self.wheelController = controller
 
     """
     When the state starts, start rotating.
