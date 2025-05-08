@@ -14,49 +14,55 @@ class ArucoDetector(Node):
     def __init__(self):
         super().__init__('aruco_detector')
 
-        self.subscriptionAruco = self.create_subscription(
-            Image, 
-            "getImage",
-            self.listener_callback_aruco,
-            10
-        )
-        
-        self.subscriptionBall = self.create_subscription(
-            Image, 
-            "getImage",
-            self.listener_callback_ball,
-            10
-        )
-
         self.publisherArucoDetection = self.create_publisher(PositionStatus, 'arucoDetection', 10)
 
         #self.create_timer(0.25, self.tijdelijk)
   
         self.publisherBallInference = self.create_publisher(PositionStatus, 'ballInference', 10)
+        
+        self.timer = self.create_timer(0.1, self.timer_callback)
+
+        self.capture = cv2.VideoCapture(0, cv2.CAP_V4L2)
+
+        self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+        self.capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+        self.capture.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+        self.capture.set(cv2.CAP_PROP_FPS, 30)
 
         print("Created Aruco + BallInference node")
 
         self.bridge = CvBridge()
+        self.frame = Image()
 
         # # Define the dictionary and parameters for ArUco marker detection
         # self.aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
         # self.parameters = cv2.aruco.DetectorParameters_create()  # Updated line  
     
-    def listener_callback_aruco(self, msg):
+    def listener_callback_aruco(self):
         output_msg = PositionStatus()
-        output_msg.found, center = self.process_image_aruco(msg)
+        output_msg.found, center = self.process_image_aruco(self.frame)
         output_msg.x, output_msg.y = center
         self.get_logger().info("from ARUCO DETECTOR, Sending: found = " + str(output_msg.found) + " | x = " + str(output_msg.x) + " | y = " + str(output_msg.y))
 
         self.publisherArucoDetection.publish(output_msg)
      
-    def listener_callback_ball(self, msg):
+    def listener_callback_ball(self):
 
         output_msg = PositionStatus()
-        output_msg.found, center = self.process_image_ball(msg)
+        output_msg.found, center = self.process_image_ball(self.frame)
         output_msg.x, output_msg.y = center
         self.get_logger().info("Calling inference; detected ball = " + str(output_msg.found) + " at " + str(output_msg.x) + " " + str(output_msg.y))
         self.publisherBallInference.publish(output_msg)
+        
+    def timer_callback(self):
+        ret, self.frame = self.capture.read()
+        if ret == True:
+            listener_callback_aruco()
+            listener_callback_ball()
+
+            self.get_logger().info('found a frame')
+        else:
+            self.get_logger().info("couldn't get a frame")
 
     def process_image_aruco(self, image):
         try:
@@ -174,9 +180,10 @@ def main(args=None):
     aruco_detector = ArucoDetector()
 
     rclpy.spin(aruco_detector)
-    rclpy.spin(publisher)
-    publisher = BallInference()
 
+    publisher = BallInference()
+    rclpy.spin(publisher)
+    
     publisher.destroy_node()
     aruco_detector.destroy_node()
     rclpy.shutdown()
