@@ -30,7 +30,7 @@ class ArucoDetector(Node):
     
     def listener_callback(self, msg):
         output_msg = PositionStatus()
-        output_msg.found: bool, center: tuple[int, int] = self.process_image(msg)
+        output_msg.found, center = self.process_image(msg)
         output_msg.x, output_msg.y = center
         self.get_logger().info("from ARUCO DETECTOR, Sending: found = " + str(output_msg.found) + " | x = " + str(output_msg.x) + " | y = " + str(output_msg.y))
 
